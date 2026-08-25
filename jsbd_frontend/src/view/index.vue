@@ -16,7 +16,7 @@
                                 <router-view></router-view>
                             </el-card>
                         </el-main>
-                        <el-footer>Footer</el-footer>
+                        <el-footer class="layout-footer"><Footer></Footer></el-footer>
                     </div>
 
                 </el-container>
@@ -28,6 +28,7 @@
 <script setup lang="ts">
 import Header from '../components/header.vue';
 import Leftmenu from '../components/leftmenu.vue';
+import Footer from '../components/footer.vue';
 import { ref,reactive } from 'vue';
 /**
  * 定义内容区域常量
@@ -44,7 +45,7 @@ const sitecontent =  reactive(
 function getsitecontent(){
     sitecontent.documentClientHeight = document.documentElement.clientHeight
     sitecontent.sitecontent={
-        minHeight:sitecontent.documentClientHeight  + 'px'
+        minHeight:sitecontent.documentClientHeight - 90 - 100 + 'px'
     }
 }
 getsitecontent();
