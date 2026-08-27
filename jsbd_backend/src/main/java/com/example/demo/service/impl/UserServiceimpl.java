@@ -43,9 +43,9 @@ public class UserServiceimpl implements UserService {
     }
 
     @Override
-    public PageVo<User> findbyPage(Integer pageNum, Integer pageSize) {
+    public PageVo<User> findbyPage(User user,Integer pageNum, Integer pageSize) {
         Integer offset = (pageNum - 1) * pageSize;
-        List<User> userdata = userMapper.findbyPage(offset, pageSize);
+        List<User> userdata = userMapper.findbyPage(user,offset, pageSize);
         Integer total = userMapper.countuser();
         PageVo<User> page = new PageVo<>();
         page.setPageNum(pageNum);

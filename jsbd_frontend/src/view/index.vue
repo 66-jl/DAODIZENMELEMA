@@ -11,8 +11,8 @@
                 </el-aside>
                 <el-container>
                     <div class="content_wrapper">
-                        <el-main clas="content">
-                            <el-card :body-style="sitecontent.sitecontent">
+                        <el-main class="content">
+                            <el-card :body-style="sitecontent.sitecontentHeight">
                                 <router-view></router-view>
                             </el-card>
                         </el-main>
@@ -36,7 +36,7 @@ import { ref,reactive } from 'vue';
 const sitecontent =  reactive(
     {
         documentClientHeight:0,
-        sitecontent:{}
+        sitecontentHeight:{}
     }
 )
 /**
@@ -44,8 +44,8 @@ const sitecontent =  reactive(
  */
 function getsitecontent(){
     sitecontent.documentClientHeight = document.documentElement.clientHeight
-    sitecontent.sitecontent={
-        minHeight:sitecontent.documentClientHeight - 90 - 100 + 'px'
+    sitecontent.sitecontentHeight={
+        minHeight:sitecontent.documentClientHeight - 90 - 100 + 'px' 
     }
 }
 getsitecontent();

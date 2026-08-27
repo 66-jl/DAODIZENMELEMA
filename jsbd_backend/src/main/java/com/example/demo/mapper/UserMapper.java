@@ -16,13 +16,28 @@ public interface UserMapper {
     @Transactional
     void Saveuser(User user);
 
-    @Select("select * from user limit #{offset},#{pageSize}")
-    List<User> findbyPage(Integer offset,Integer pageSize);
+   @Select("<script>" +
+            "SELECT * FROM user" +
+            "<where>" +
+            "   <if test='user.username != null and user.username != \"\"'>" +
+            "       AND username LIKE CONCAT('%', #{user.username}, '%')" +
+            "   </if>" +
+            "   <if test='user.email != null and user.email != \"\"'>" +
+            "       AND email = #{user.email}" +
+            "   </if>" +
+            "   <if test='user.phone != null and user.phone != \"\"'>" +
+            "       AND phone = #{user.phone}" +
+            "   </if>" +
+            "</where>" +
+            " ORDER BY id DESC" +  
+            " LIMIT #{offset}, #{pageSize}" +
+            "</script>")
+    List<User> findbyPage(User user,Integer offset,Integer pageSize);
     
     @Select("select count(id) from user")
     Integer countuser();
 
-    @Select("select count(username) from user")
+    @Select("select count(username) from user where username = #{username}")
     int countByUsername(String username);
 
 }

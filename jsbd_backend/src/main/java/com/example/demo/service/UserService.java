@@ -8,5 +8,5 @@ import com.example.demo.vo.PageVo;
 public interface UserService {
     List<User> findall();
     User addUser(User user);
-    PageVo<User> findbyPage(Integer pageNum, Integer pageSize);
+    PageVo<User> findbyPage(User user,Integer pageNum, Integer pageSize);
 }

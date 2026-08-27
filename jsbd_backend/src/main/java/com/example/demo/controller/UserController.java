@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +21,7 @@ import jakarta.annotation.Resource;
 
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/he")
 public class UserController {
     @Resource
     UserService userService;
@@ -30,15 +31,17 @@ public class UserController {
         return userService.findall();
     }
 
-    @PostMapping
+    @PostMapping("/admin/add")
+    @CrossOrigin
     public Result<User> adduser(@RequestBody User user){
         userService.addUser(user);
         return Result.success(user);
     }
 
-    @GetMapping("/page")
-    public Result<PageVo<User>> findbyPageVo(@RequestParam(defaultValue="1") Integer pageNum,@RequestParam(defaultValue="10") Integer pageSize ) {
-        PageVo<User> page =  userService.findbyPage(pageNum, pageSize);
+    @PostMapping("/admin/list")
+    @CrossOrigin
+    public Result<PageVo<User>> findbyPageVo(@RequestBody User user,@RequestParam(defaultValue="1") Integer pageNum,@RequestParam(defaultValue="10") Integer pageSize ) {
+        PageVo<User> page =  userService.findbyPage(user,pageNum, pageSize);
          return Result.success(page);
         
     }
