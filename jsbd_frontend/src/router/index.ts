@@ -8,15 +8,22 @@ const router = createRouter({
       path: '/index',
       name: 'Index',
       component: () => import('../view/index.vue'),
-      children:[
+      children: [
         {
           path: '/welcome',
           component: () => import('../view/welcome.vue')
         },
         {
           path: '/admin',
-          component: () => import('../view/admin/list.vue')
+          component: () => import('../view/admin/list.vue'),
+          children: [
+            {
+              path: 'add',
+              component: () => import('../view/admin/addform.vue')
+            },
+          ]
         },
+
       ]
 
     }

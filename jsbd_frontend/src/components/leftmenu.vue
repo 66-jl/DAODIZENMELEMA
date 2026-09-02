@@ -22,7 +22,7 @@
             </el-icon>
             亚洲
           </el-menu-item>
-          <el-menu-item index="1-2">
+          <el-menu-item index="1-2"  >
             <el-icon>
               <location />
             </el-icon>

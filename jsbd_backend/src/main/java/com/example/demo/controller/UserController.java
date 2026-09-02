@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,11 +24,19 @@ import jakarta.annotation.Resource;
 public class UserController {
     @Resource
     UserService userService;
-
-    @GetMapping
-    public List<User> getuser() {
-        return userService.findall();
+    //
+    @PostMapping("/user/find")
+    public User getuser(@RequestBody User user) {
+        return userService.finduser(user);
     }
+
+    @PostMapping("/user/update")
+    @CrossOrigin
+    public Result<User> postMethodName(@RequestBody User user){
+        userService.updateuser(user);
+        return Result.success(user);
+    }
+    
 
     @PostMapping("/admin/add")
     @CrossOrigin
@@ -45,5 +52,14 @@ public class UserController {
          return Result.success(page);
         
     }
+
+    @PostMapping("/user/del")
+    @CrossOrigin
+    public Result<Void> deluser(@RequestBody List<Long> ids) {
+        userService.delUser(ids);
+        
+        return Result.success();
+    }
+    
     
 }

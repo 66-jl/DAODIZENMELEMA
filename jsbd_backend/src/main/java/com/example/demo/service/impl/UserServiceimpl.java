@@ -18,8 +18,8 @@ public class UserServiceimpl implements UserService {
     @Resource
     private UserMapper userMapper;
     @Override
-    public List<User> findall() {
-        return userMapper.findall();
+    public User finduser(User user) {
+        return userMapper.finduser(user);
     }
 
     @Override
@@ -53,6 +53,16 @@ public class UserServiceimpl implements UserService {
         page.setData(userdata);
         page.setTotal(total);
         return page;
+    }
+
+    @Override
+    public void updateuser(User user){
+        userMapper.updateuser(user);
+    }
+
+    @Override
+    public void delUser(List<Long> ids){
+        userMapper.delUser(ids);
     }
 
 }
