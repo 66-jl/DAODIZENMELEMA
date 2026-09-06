@@ -20,17 +20,17 @@ import jakarta.annotation.Resource;
 
 
 @RestController
-@RequestMapping("/he")
+@RequestMapping("/he/user")
 public class UserController {
     @Resource
     UserService userService;
     //
-    @PostMapping("/user/find")
+    @PostMapping("/find")
     public User getuser(@RequestBody User user) {
         return userService.finduser(user);
     }
 
-    @PostMapping("/user/update")
+    @PostMapping("/update")
     @CrossOrigin
     public Result<User> postMethodName(@RequestBody User user){
         userService.updateuser(user);
@@ -38,14 +38,14 @@ public class UserController {
     }
     
 
-    @PostMapping("/admin/add")
+    @PostMapping("/add")
     @CrossOrigin
     public Result<User> adduser(@RequestBody User user){
         userService.addUser(user);
         return Result.success(user);
     }
 
-    @PostMapping("/admin/list")
+    @PostMapping("/list")
     @CrossOrigin
     public Result<PageVo<User>> findbyPageVo(@RequestBody User user,@RequestParam(defaultValue="1") Integer pageNum,@RequestParam(defaultValue="10") Integer pageSize ) {
         PageVo<User> page =  userService.findbyPage(user,pageNum, pageSize);
@@ -53,7 +53,7 @@ public class UserController {
         
     }
 
-    @PostMapping("/user/del")
+    @PostMapping("/del")
     @CrossOrigin
     public Result<Void> deluser(@RequestBody List<Long> ids) {
         userService.delUser(ids);

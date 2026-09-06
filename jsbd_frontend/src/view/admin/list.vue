@@ -24,7 +24,7 @@
         </el-form>
 
         
-        <router-view></router-view>
+        <!-- <router-view></router-view> -->
         
 
         <el-divider boder-style="dashed" />
@@ -127,6 +127,13 @@ function updateuser(row:any){
     // console.log(row);
 }
 
+
+//获取选中多行的数据
+function handleSelectionChange(val:any) {
+  multipleSelection.value = val;
+}
+
+
 //删除方法
 async function del(id?:any){
     try{
@@ -170,9 +177,6 @@ function deluser(id?:any){
 
 }
 
-//获取选中多行的数据
-function handleSelectionChange(val:any) {
-  multipleSelection.value = val;
-}
+
 onMounted(getlist);
 </script>
