@@ -38,15 +38,22 @@ const form = {
     phone: '',
 
 }
-defineExpose({ showform })
-//将方法暴露给父组件，由于父组件无法直接修改子组件中的变量
+
+
+defineExpose({ showform })//将方法暴露给父组件，由于父组件无法直接修改子组件中的变量
+
+const userform = reactive({ ...form })
+
+
+
+//显示表单，根据传没传数据分别处理
 function showform(row:any) {
     if(row){
         Object.assign(userform,row);
     }
     dialogFormVisible.value = true;
 }
-const userform = reactive({ ...form })
+
 
 // 调用后端接口写入新用户数据或更新用户信息
 async function onSubmit() {

@@ -47,12 +47,16 @@ public interface UserMapper {
     @Update("update `user` set `username` = #{username},`email` = #{email},`phone` = #{phone} where `id` = #{id}")
     void updateuser(User user);
 
-    @Delete("<script>" +
-         "DELETE FROM `user` WHERE id IN " +
-         "<foreach collection='ids' item='id' open='(' separator=',' close=')'>" +
-         "   #{id}" +
-         "</foreach>" +
-         "</script>")
+    @Delete("<script>"
+            + "DELETE FROM `user` WHERE id IN "
+            + "<foreach collection='ids' item='id' open='(' separator=',' close=')'>"
+            + "   #{id}"
+            + "</foreach>"
+            + "</script>")
     void delUser(@Param("ids") List<Long> ids);
+
+    
+    @Select("SELECT * FROM user WHERE username = #{username} AND password = #{password}")
+    User findByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
 
 }

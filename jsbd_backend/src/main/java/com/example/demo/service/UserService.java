@@ -12,4 +12,6 @@ public interface UserService {
     void delUser(List<Long> ids);
 
     public void updateuser(User user);
+
+    void logout();
 }

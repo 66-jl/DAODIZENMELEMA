@@ -50,7 +50,7 @@
 
         <el-pagination @current-change="currentpagechange" background layout="prev, pager, next"
             style="float: right;margin: 10px 20px 10px 0px;" :total="listtotal" />
-        <addform ref="addref"> </addform><!--ref="addref"：Vue 会把 addform 这个组件的实例（内存地址）存到父组件的一个变量里，这个变量名就叫 addref -->
+        <addform ref="addref"> </addform><!-- ref="addref"：Vue 会把 addform 这个组件的实例（内存地址）存到父组件的一个变量里，这个变量名就叫 addref -->
 
     </div>
 </template>

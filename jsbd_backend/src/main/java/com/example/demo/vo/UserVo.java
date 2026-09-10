@@ -1,15 +1,11 @@
-package com.example.demo.entity;
+package com.example.demo.vo;
 
 import lombok.Data;
 
-
-@Data
-public class User {
+@Data 
+public class UserVo {
     private Integer id;
     private String username;
-    private String password;
     private String email;
     private String phone;
-
-
 }

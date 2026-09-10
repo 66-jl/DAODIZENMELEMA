@@ -34,19 +34,41 @@ service.interceptors.request.use(config => {
 );
 
 // 3. 响应拦截器（统一处理错误码、401跳转登录）
+// service.interceptors.response.use(
+//   response => response.data,
+//   error => {
+//     if (error.response?.status === 401) {
+//       // 跳转登录页
+//       clearLocalStorage();
+//       ElMessageBox.alert('登录已过期，请重新登录', '提示', {
+//         confirmButtonText: '确定',
+//         callback: () => {
+//           logout();
+//         }
+//       });
+//     }
+//     return Promise.reject(error);
+//   }
+// );
 service.interceptors.response.use(
-  response => response.data,
+  response => {
+    const res = response.data;
+    // 后端返回 200 但业务码不对的情况（如果以后去掉 @ResponseStatus 会走这里）
+    if (res && res.code !== undefined && res.code !== 200) {
+      ElMessage.error(res.message || '请求失败');
+      return Promise.reject(res);
+    }
+    return res;
+  },
   error => {
     if (error.response?.status === 401) {
-      // 跳转登录页
       clearLocalStorage();
       ElMessageBox.alert('登录已过期，请重新登录', '提示', {
         confirmButtonText: '确定',
-        callback: () => {
-          logout();
-          // 处理跳转逻辑
-        }
+        callback: () => logout(),
       });
+    } else {
+      ElMessage.error(error.response?.data?.message || '请求失败');  // ← 补上这行
     }
     return Promise.reject(error);
   }

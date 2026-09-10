@@ -1,6 +1,6 @@
 import Constants from "./constants.ts";
 
-export const saveLocalStorage = (key: string, value: string) => {
+export const saveLocalStorage = (key: any, value: any) => {
     localStorage.setItem(key, value);
 };
 

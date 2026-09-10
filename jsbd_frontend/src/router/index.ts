@@ -1,3 +1,4 @@
+import { useUserInfoStore } from '@/stores/user.ts';
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -33,5 +34,15 @@ const router = createRouter({
     }
   ]
 })
-
+//路由守卫
+router.beforeEach((to, from) => {
+  if(to.path == '/login'){
+    return true;
+  }
+  const token = useUserInfoStore().getToken;
+  if(token){
+    return true;
+  }
+   return { name: 'Login' }
+})
 export default router

@@ -17,4 +17,10 @@ export const adminAPI = {
         return post('/user/del',params);
 
     },
+    login:(params:any)=>{
+        return post('/Auth/login',params);
+    },
+    logout:()=>{
+        return get('/Auth/logout');
+    },
 }//定义

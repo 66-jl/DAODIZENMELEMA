@@ -6,9 +6,9 @@
             </div>
             <div class="header-rinfo">
                 当前用户：
-                <span> admin </span>
+                <span> {{ userStore.user.username }} </span>
                 <span class="header-exit">
-                    <a>退出</a>
+                    <a @click="logout">退出</a>
                 </span>
             </div>
         </div>
@@ -16,3 +16,26 @@
 
     </div>
 </template>
+
+<script lang="ts" setup>
+import { adminAPI } from '@/api/adminAPI';
+import { useUserInfoStore } from '@/stores/user';
+
+
+
+const userStore = useUserInfoStore();
+
+async function logout(){
+    try{
+        await adminAPI.logout();
+        window.location.href = '/'
+    }
+    catch(e){
+        console.log(e);
+
+    }finally{
+        useUserInfoStore().logout();
+    }
+}
+
+</script>

@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 import java.util.List;
 
+import cn.dev33.satoken.stp.StpUtil;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.User;
@@ -24,17 +25,6 @@ public class UserServiceimpl implements UserService {
 
     @Override
     public User addUser(User user) {
-        // ===== 校验逻辑放这里 =====
-        // if (user.getUsername() == null || user.getUsername().isBlank()) {
-        //     throw new IllegalArgumentException("用户名不能为空");
-        // }
-        // if (user.getEmail() == null || !user.getEmail().matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
-        //     throw new IllegalArgumentException("邮箱格式不正确");
-        // }
-        // if (user.getPhone() == null || !user.getPhone().matches("^1[3-9]\\d{9}$")) {
-        //     throw new IllegalArgumentException("手机号格式不正确");
-        // }
-        // 业务校验：用户名是否已存在（需要在 Mapper 加查询）
         if (userMapper.countByUsername(user.getUsername()) > 0) {
             throw new BussinessException(ResponseCode.USERNAME_EXCIT);
         }
@@ -63,6 +53,11 @@ public class UserServiceimpl implements UserService {
     @Override
     public void delUser(List<Long> ids){
         userMapper.delUser(ids);
+    }
+
+    @Override
+    public void logout() {
+        StpUtil.logout();
     }
 
 }
