@@ -6,7 +6,7 @@
             </div>
             <div class="header-rinfo">
                 当前用户：
-                <span> {{ userStore.user.username }} </span>
+                <span> {{ user.username }} </span>
                 <span class="header-exit">
                     <a @click="logout">退出</a>
                 </span>
@@ -20,10 +20,11 @@
 <script lang="ts" setup>
 import { adminAPI } from '@/api/adminAPI';
 import { useUserInfoStore } from '@/stores/user';
+import { storeToRefs } from 'pinia';
 
 
-
-const userStore = useUserInfoStore();
+const userInfoStore = useUserInfoStore()           
+const { user } = storeToRefs(userInfoStore)
 
 async function logout(){
     try{

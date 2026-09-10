@@ -6,7 +6,7 @@ import {saveLocalStorage,getLocalStorage,clearLocalStorage} from './utils';
 import {ElMessage,ElMessageBox} from 'element-plus';
 
 
-const TOKEN_NAME='hetoken';
+const TOKEN_NAME='satoken';
 
 // 创建 axios 实例
 const service = axios.create({
@@ -57,6 +57,12 @@ service.interceptors.response.use(
     if (res && res.code !== undefined && res.code !== 200) {
       ElMessage.error(res.message || '请求失败');
       return Promise.reject(res);
+    }
+    if (res.code === 11012 || res.code === 11011) {
+      ElMessage.closeAll();
+      ElMessage.error('您没有登录，请重新登录');
+      setTimeout(logout, 300);
+      return Promise.reject(response);
     }
     return res;
   },

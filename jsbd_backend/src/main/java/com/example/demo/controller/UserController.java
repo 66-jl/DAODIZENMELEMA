@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,6 +48,7 @@ public class UserController {
 
     @PostMapping("/list")
     @CrossOrigin
+    @SaCheckLogin
     public Result<PageVo<User>> findbyPageVo(@RequestBody User user,@RequestParam(defaultValue="1") Integer pageNum,@RequestParam(defaultValue="10") Integer pageSize ) {
         PageVo<User> page =  userService.findbyPage(user,pageNum, pageSize);
          return Result.success(page);
