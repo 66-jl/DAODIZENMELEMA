@@ -23,9 +23,9 @@ export const useUserInfoStore = defineStore('userInfo', () => {
     user.email = data.user.email;
     user.phone = data.user.phone;
     token.value = data.token;
-    saveLocalStorage(constants.USERTOKEN,token.value);
+    saveLocalStorage(constants.USERTOKEN, token.value);
   }
-  function logout(){
+  function logout() {
     user.id = '';
     user.username = '';
     user.email = '';
@@ -35,5 +35,7 @@ export const useUserInfoStore = defineStore('userInfo', () => {
 
   }
 
-  return { token, setuserInfo,getToken,user,logout }
+  return { token, setuserInfo, getToken, user, logout }
+}, {
+  persist: true
 })

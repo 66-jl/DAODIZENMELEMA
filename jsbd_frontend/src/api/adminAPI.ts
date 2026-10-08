@@ -4,7 +4,7 @@ export const adminAPI = {
         return post('/user/add',params);
     },
     querylist: (params:any,pageNum:any,pageSize:any) => {
-        return post('/user/list'+'?pageNum=' + pageNum + '&pageSize=' + pageSize,params);
+        return post('/user/list' + '?pageNum=' + pageNum + '&pageSize=' + pageSize,params);
     },
 
     finduser: (params:any)=>{
@@ -22,5 +22,8 @@ export const adminAPI = {
     },
     logout:()=>{
         return get('/Auth/logout');
+    },
+    kicout:(params:any)=>{
+        return post('/Auth/kickout'+'?id='+params);
     },
 }//定义

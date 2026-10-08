@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,5 +41,16 @@ public class AuthController {
 
         return Result.success();
     }
-    
+
+
+    @PostMapping("kickout")
+    @CrossOrigin
+    public Result<Void> kickout(@RequestParam Long id) {
+
+        // 踢人下线不会清除Token信息，而是将其打上特定标记，再次访问会提示：Token已被踢下线。
+        StpUtil.kickout(id);
+
+        // 返回
+        return Result.success();
+    }
 }

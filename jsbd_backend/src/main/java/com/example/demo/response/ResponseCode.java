@@ -13,7 +13,7 @@ public enum ResponseCode {
     ERROE(500,"操作失败"),
     CAPTCHA_ERROR(1002,"验证码错误"),
     USER_PSD_ERROR(1003,"密码错误"),
-    CAPTCHA_CREATE_ERROE(500,"验证码创建失败");
+    CAPTCHA_CREATE_ERROR(500,"验证码创建失败");
 
     private  Integer code;
     private  String message;

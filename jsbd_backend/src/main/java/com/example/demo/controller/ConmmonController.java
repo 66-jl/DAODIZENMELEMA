@@ -42,7 +42,7 @@ public class ConmmonController {
             ImageIO.write(image, "jpg", os);
             base64Code = Base64.getEncoder().encodeToString(os.toByteArray());
         } catch (IOException ex) {
-            throw new BussinessException(ResponseCode.CAPTCHA_CREATE_ERROE);
+            throw new BussinessException(ResponseCode.CAPTCHA_CREATE_ERROR);
         }
         CaptchaVo captcha = new CaptchaVo();
         captcha.setCaptchaImage("data:image/jpg;base64,"+base64Code);

@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.util.List;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import com.example.demo.dto.UserDTO;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,13 +19,12 @@ import com.example.demo.vo.PageVo;
 import jakarta.annotation.Resource;
 
 
-
-
 @RestController
 @RequestMapping("/he/user")
 public class UserController {
     @Resource
     UserService userService;
+
     //
     @PostMapping("/find")
     public User getuser(@RequestBody User user) {
@@ -33,35 +33,35 @@ public class UserController {
 
     @PostMapping("/update")
     @CrossOrigin
-    public Result<User> postMethodName(@RequestBody User user){
+    public Result<User> updateuser(@RequestBody User user) {
         userService.updateuser(user);
         return Result.success(user);
     }
-    
+
 
     @PostMapping("/add")
     @CrossOrigin
-    public Result<User> adduser(@RequestBody User user){
-        userService.addUser(user);
-        return Result.success(user);
+    public Result<User> adduser(@RequestBody UserDTO userDTO) throws Exception {
+        userService.addUser(userDTO);
+        return Result.success();
     }
 
     @PostMapping("/list")
     @CrossOrigin
     @SaCheckLogin
-    public Result<PageVo<User>> findbyPageVo(@RequestBody User user,@RequestParam(defaultValue="1") Integer pageNum,@RequestParam(defaultValue="10") Integer pageSize ) {
-        PageVo<User> page =  userService.findbyPage(user,pageNum, pageSize);
-         return Result.success(page);
-        
+    public Result<PageVo<User>> findPageVo(@RequestBody User user, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
+        PageVo<User> page = userService.findbyPage(user, pageNum, pageSize);
+        return Result.success(page);
+
     }
 
     @PostMapping("/del")
     @CrossOrigin
     public Result<Void> deluser(@RequestBody List<Long> ids) {
         userService.delUser(ids);
-        
+
         return Result.success();
     }
-    
-    
+
+
 }

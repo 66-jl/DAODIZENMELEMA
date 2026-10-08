@@ -46,6 +46,12 @@
                 </template>
             </el-table-column>
 
+            <el-table-column label="管理">
+                <template #default="scope">
+                    <el-button type="danger" @click="kicout(scope.row.id)">下线</el-button>
+                </template>
+            </el-table-column>
+
         </el-table>
 
         <el-pagination @current-change="currentpagechange" background layout="prev, pager, next"
@@ -175,6 +181,11 @@ function deluser(id?:any){
       })
     })
 
+}
+
+//下线
+function kicout(id:any){
+    adminAPI.kicout(id);
 }
 
 

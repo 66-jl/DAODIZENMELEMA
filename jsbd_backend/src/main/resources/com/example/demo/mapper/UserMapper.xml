@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.UserMapper">
+    <insert id="insertStuExpr">
+        insert into study_experience(user_id,school_name,start_date,end_date,create_time,update_time) values
+        <foreach collection="exprlist" item="expr" separator=",">
+            (#{expr.userId},#{expr.schoolName},#{expr.startDate},#{expr.endDate},#{expr.createTime},#{expr.updateTime})
+        </foreach>
+    </insert>
+    <!-- id与方法名一致，resultType返回值与单条数据的类型一致 -->
+    <select id="findall" resultType="com.example.demo.entity.User">
+        select username
+        from user
+    </select>
+
+
+    <!--    占位符内的属性名与属性名一致-->
+    <select id="findbyPage" resultType="com.example.demo.entity.User">
+        select * from user
+        <where>
+            <if test="user.username != null and user.username != ''">
+                AND username LIKE CONCAT('%', #{user.username}, '%')
+            </if>
+            <if test="user.email != null and user.email != ''">
+                AND email = #{user.email}
+            </if>
+            <if test="user.phone != null and user.phone != ''">
+                AND phone = #{user.phone}
+            </if>
+
+        </where>
+        ORDER BY id DESC
+        LIMIT #{offset}, #{pageSize}
+
+    </select>
+</mapper>

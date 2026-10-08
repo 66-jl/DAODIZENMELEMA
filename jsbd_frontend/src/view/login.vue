@@ -104,6 +104,7 @@ function onSubmit(){
     let result = await adminAPI.login(form);
     console.log(result.data);
 
+    //
     useUserInfoStore().setuserInfo(result.data);
 
     //跳转首页
