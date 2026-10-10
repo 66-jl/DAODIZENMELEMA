@@ -130,7 +130,7 @@ function conaddref(){
 
 function updateuser(row:any){
     addref.value.showform(row);
-    // console.log(row);
+    console.log(Object.keys(row))
 }
 
 

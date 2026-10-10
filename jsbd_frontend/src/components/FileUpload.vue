@@ -1,116 +1,107 @@
 <template>
-    <div class="file-upload">
-        <el-upload
-            v-model:file-list="fileList"
-            list-type="picture-card"
-            :limit="limit"
-            :accept="accept"
-            :http-request="customUpload"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :on-success="handleSuccess"
-            :on-exceed="handleExceed"
-            :before-upload="beforeUpload"
-        >
-            <el-icon><Plus /></el-icon>
-        </el-upload>
-
-        <!-- 图片预览弹窗 -->
-        <el-dialog v-model="previewVisible" :append-to-body="true" title="预览">
-            <img :src="previewUrl" style="width: 100%" alt="预览图" />
-        </el-dialog>
-    </div>
+  <el-upload
+    class="avatar-uploader"
+    action="http://localhost:8001/he/upload"
+    :show-file-list="false"
+    :on-success="handleAvatarSuccess"
+    :before-upload="beforeAvatarUpload"
+    :headers="uploadHeaders"
+    name="file"
+  >
+    <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+    <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+  </el-upload>
 </template>
 
-<script setup lang="ts">
-import { ref, watch } from 'vue';
-import { ElMessage } from 'element-plus';
-import { Plus } from '@element-plus/icons-vue';
-import { post } from '@/utils/request';
-import { getFileUrl } from '@/utils/utils';
+<script setup>
+import { ref,watch } from 'vue'
+import { ElMessage } from 'element-plus'
+import { Plus } from '@element-plus/icons-vue'
 
-// 父组件通过 v-model 传入已保存的文件相对路径（字符串）
 const props = defineProps({
-    modelValue: { type: String, default: '' },         // 已保存的文件相对路径
-    action: { type: String, default: '/file/upload' }, // 上传接口路径
-    limit: { type: Number, default: 1 },               // 最多上传数量
-    accept: { type: String, default: 'image/*' },      // 允许的文件类型
-    maxSize: { type: Number, default: 2 },             // 单个文件最大体积(MB)
-});
+  modelValue: { type: String, default: '' }
+})
+const emit = defineEmits(['update:modelValue'])
+const imageUrl = ref(props.modelValue)
 
-const emit = defineEmits(['update:modelValue']);
+watch(() => props.modelValue, (val) => {
+  imageUrl.value = val
+})
 
-const fileList = ref<any[]>([]);
-const previewVisible = ref(false);
-const previewUrl = ref('');
+// 如果需要 Token 鉴权，在此处添加
+const uploadHeaders = ref({
+  // Authorization: 'Bearer ' + localStorage.getItem('token')
+})
 
-// 父组件传入的路径变化时，同步成 el-upload 能显示的 fileList
-watch(
-    () => props.modelValue,
-    (url) => {
-        fileList.value = url
-            ? [{ name: url.split('/').pop() || url, url: getFileUrl(url) }]
-            : [];
-    },
-    { immediate: true }
-);
+const beforeAvatarUpload = (rawFile) => {
+  console.log('文件类型 type:', rawFile.type)
+  console.log('文件大小 size:', rawFile.size, '字节 =', (rawFile.size / 1024 / 1024).toFixed(2), 'MB')
+  const isImage = rawFile.type.startsWith('image/')
+  const isLt2M = rawFile.size / 1024 / 1024 < 2
 
-// 上传前校验体积（类型交给 accept 过滤）
-function beforeUpload(file: File) {
-    if (props.maxSize > 0 && file.size / 1024 / 1024 > props.maxSize) {
-        ElMessage.error(`文件大小不能超过 ${props.maxSize}MB`);
-        return false;
-    }
-    return true;
+  if (!isImage) {
+    ElMessage.error('只能上传图片文件！')
+    return false
+  }
+  if (!isLt2M) {
+    ElMessage.error('图片大小不能超过 2MB！')
+    return false
+  }
+  return true
 }
 
-// 自定义上传：走项目里的 axios，自动带 token + baseURL
-async function customUpload(options: any) {
-    const formData = new FormData();
-    formData.append('file', options.file);
-    try {
-        const res: any = await post(props.action, formData);
-        options.onSuccess(res);   // 通知 el-upload 上传成功
-    } catch (err) {
-        options.onError(err);     // 通知 el-upload 上传失败
-    }
-}
+// 关键：根据后端实际返回格式解析
+const handleAvatarSuccess = (response) => {
+  // 场景 A: 后端直接返回 url 字符串（最常见）
+  if (typeof response === 'string' && response.startsWith('http')) {
+    imageUrl.value = response
+    ElMessage.success('头像上传成功')
+    return
+  }
 
-// 上传成功回调：后端约定返回 { code:200, data:文件相对路径 }
-function handleSuccess(response: any, uploadFile: any) {
-    if (response?.code === 200) {
-        uploadFile.url = getFileUrl(response.data);   // 让缩略图显示后端地址
-        emit('update:modelValue', response.data);     // 把相对路径回传给父组件
-    } else {
-        ElMessage.error(response?.message || '上传失败');
-    }
-}
+  // 场景 B: 后端返回 JSON 包装类，如 { code: 0, data: { url: "..." } }
+  if (response.code === 200 && response.data) {
+    imageUrl.value = response.data
+    emit('update:modelValue', response.data)  // 同步给父组件
+    ElMessage.success('上传成功')
+    return
+  }
 
-// 删除文件
-function handleRemove() {
-    emit('update:modelValue', '');
-}
+  // 场景 C: 后端返回 { url: "..." }
+  if (response.url) {
+    imageUrl.value = response.url
+    ElMessage.success('上传成功')
+    return
+  }
 
-// 点击预览
-function handlePreview(file: any) {
-    previewUrl.value = file.url;
-    previewVisible.value = true;
-}
-
-// 超出数量限制
-function handleExceed() {
-    ElMessage.warning(`最多只能上传 ${props.limit} 个文件`);
+  ElMessage.error('上传失败：' + JSON.stringify(response))
 }
 </script>
 
-<style lang="less" scoped>
-@import url('../styles/var.less');
-
-.file-upload {
-    :deep(.el-upload--picture-card),
-    :deep(.el-upload-list--picture-card .el-upload-list__item) {
-        width: @upload--item-width;
-        height: @upload--item-height;
-    }
+<style scoped>
+.avatar-uploader .avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+</style>
+<style>
+.avatar-uploader .el-upload {
+  border: 1px dashed var(--el-border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
+}
+.avatar-uploader .el-upload:hover {
+  border-color: var(--el-color-primary);
+}
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  text-align: center;
 }
 </style>

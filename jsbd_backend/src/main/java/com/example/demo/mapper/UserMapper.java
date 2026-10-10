@@ -35,7 +35,7 @@ public interface UserMapper {
 
 
     @Options(useGeneratedKeys = true,keyProperty = "id")
-    @Insert("insert into `user` (`username`,`email`,`phone`) VALUES (#{username},#{email},#{phone})")
+    @Insert("insert into `user` (`username`,`avatar_url`,`email`,`phone`) VALUES (#{username},#{avatarUrl},#{email},#{phone})")
     void Saveuser(User user);
 
     List<User> findbyPage(

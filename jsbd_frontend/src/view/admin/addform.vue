@@ -11,7 +11,14 @@
             <el-form-item label="联系方式" :label-width="formLabelWidth">
                 <el-input v-model="userform.phone" placeholder="请输入手机号" />
             </el-form-item>
+
             <!-- //插入图像 -->
+             <el-form-item>
+                <FileUpload v-model="userform.avatarUrl"></FileUpload>
+             </el-form-item>
+
+
+            
             <!-- 学习经历 -->
             <div v-for="(exp, index) in userform.studyExperienceList" :key="index">
                 <el-divider>学习经历 {{ index + 1 }}</el-divider>
@@ -46,6 +53,7 @@
 import { adminAPI } from '@/api/adminAPI'
 import { ElMessage } from 'element-plus'
 import { reactive, ref } from 'vue'
+import FileUpload from '@/components/FileUpload.vue'
 
 
 const dialogFormVisible = ref(false)
@@ -58,6 +66,7 @@ interface StudyExperience  {
 interface UserForm {
   id: string
   username: string
+  avatarUrl:string
   email: string
   phone: string
   studyExperienceList: StudyExperience[]
@@ -65,6 +74,7 @@ interface UserForm {
 const form: UserForm = {
     id: '',
     username: '',
+    avatarUrl:'',
     email: '',
     phone: '',
     studyExperienceList: [],
@@ -72,11 +82,12 @@ const form: UserForm = {
 }
 
 
-defineExpose({ showform })//将方法暴露给父组件，由于父组件无法直接修改子组件中的变量
+
 
 const userform = reactive<UserForm>({
   id: '',
   username: '',
+  avatarUrl:'',
   email: '',
   phone: '',
   studyExperienceList: []
@@ -92,9 +103,12 @@ function showform(row: any) {
     dialogFormVisible.value = true;
 }
 
+defineExpose({ showform })//将方法暴露给父组件，由于父组件无法直接修改子组件中的变量
 
 // 调用后端接口写入新用户数据或更新用户信息
 async function onSubmit() {
+
+
     if (userform.id) {
         await adminAPI.updateuser(userform);
         ElMessage.success('用户信息更新成功！');

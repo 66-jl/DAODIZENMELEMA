@@ -63,12 +63,11 @@ public class UserServiceimpl implements UserService {
                     expr.setUpdateTime(LocalDateTime.now());
 
                 });
-                int i =1/0;
                 userMapper.insertStuExpr(exprlist);
-//                throw new Exception("出错了");
-                OperationLog operationLog = new OperationLog(null, LocalDateTime.now(), "新增用户" + userDTO.getUsername());
-                userlogService.savelog(operationLog);
+
             }
+            OperationLog operationLog = new OperationLog(null, LocalDateTime.now(), "新增用户" + userDTO.getUsername());
+            userlogService.savelog(operationLog);
         } catch (Exception e) {
             OperationLog operationLog = new OperationLog(null, LocalDateTime.now(), "新增用户失败");
             userlogService.savelog(operationLog);

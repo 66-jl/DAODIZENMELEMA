@@ -1,4 +1,4 @@
-package com.itheima.utils;
+package com.example.demo.utils;
 
 import com.aliyun.oss.*;
 import com.aliyun.oss.common.auth.CredentialsProviderFactory;
@@ -14,7 +14,7 @@ import java.util.UUID;
 public class AliyunOSSOperator {
 
     private String endpoint = "https://oss-cn-beijing.aliyuncs.com";
-    private String bucketName = "java-ai";
+    private String bucketName = "javajjsbd";
     private String region = "cn-beijing";
 
     public String upload(byte[] content, String originalFilename) throws Exception {

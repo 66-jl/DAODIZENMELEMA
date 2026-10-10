@@ -57,6 +57,7 @@ public class AuthServiceimpl implements AuthService {
         UserVo userInfo = new UserVo();
         userInfo.setId(user.getId());
         userInfo.setUsername(user.getUsername());
+        userInfo.setAvatarUrl(user.getAvatarUrl());
         userInfo.setEmail(user.getEmail());
         userInfo.setPhone(user.getPhone());
         loginVo.setUser(userInfo);

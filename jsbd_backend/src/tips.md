@@ -19,6 +19,7 @@
     git pull                    # 4. 拉取远程最新代码（防止冲突）
 
     git push                    # 5. 推送到远程仓库
+    git reset --soft HEAD~1     #6.撤回提交
     
 # 常用注解
     @RequestBody 是 Spring Framework 中的一个注解，用于将 HTTP 请求体（Request Body）中的数据自动绑定到 Java 对象上

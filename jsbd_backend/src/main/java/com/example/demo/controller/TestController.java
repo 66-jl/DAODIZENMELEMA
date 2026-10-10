@@ -47,26 +47,26 @@ public class TestController {
                 ;
     }
 
-    @RequestMapping("/list")
-    public List<User> list() throws FileNotFoundException {
-        //加载并读取user。test，
-        InputStream in = this.getClass().getClassLoader().getResourceAsStream("user.txt");
-        ArrayList<String> lines = IoUtil.readLines(in, StandardCharsets.UTF_8,new ArrayList<>());
-
-        //解析结合，封装为user对象
-        List<User> userList = lines.stream().map(line ->{
-           String[] part = line.split(",");
-           Integer id = Integer.parseInt(part[0]);
-           String username = part[1];
-           String password = part[2];
-            String email = part[3];
-            String phone = part[4];
-            return new User(id,username,password,email,phone);
-
-        }).toList();
-
-        return userList;
-    }
+//    @RequestMapping("/list")
+//    public List<User> list() throws FileNotFoundException {
+//        //加载并读取user。test，
+//        InputStream in = this.getClass().getClassLoader().getResourceAsStream("user.txt");
+//        ArrayList<String> lines = IoUtil.readLines(in, StandardCharsets.UTF_8,new ArrayList<>());
+//
+//        //解析结合，封装为user对象
+//        List<User> userList = lines.stream().map(line ->{
+//           String[] part = line.split(",");
+//           Integer id = Integer.parseInt(part[0]);
+//           String username = part[1];
+//           String password = part[2];
+//            String email = part[3];
+//            String phone = part[4];
+//            return new User(id,username,password,email,phone);
+//
+//        }).toList();
+//
+//        return userList;
+//    }
 
     @GetMapping("/findall")
     public List<User> findall() {

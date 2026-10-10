@@ -7,6 +7,7 @@ export const useUserInfoStore = defineStore('userInfo', () => {
   const user = reactive({
     id: '',
     username: '',
+    avatarUrl:'',
     email: '',
     phone: ''
   })
@@ -20,6 +21,7 @@ export const useUserInfoStore = defineStore('userInfo', () => {
   function setuserInfo(data: any) {
     user.id = data.user.id;
     user.username = data.user.username;
+    user.avatarUrl=data.user.avatarUrl;
     user.email = data.user.email;
     user.phone = data.user.phone;
     token.value = data.token;
@@ -28,6 +30,7 @@ export const useUserInfoStore = defineStore('userInfo', () => {
   function logout() {
     user.id = '';
     user.username = '';
+    user.avatarUrl='';
     user.email = '';
     user.phone = '';
     token.value = '';

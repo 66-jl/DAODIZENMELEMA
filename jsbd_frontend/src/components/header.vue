@@ -5,6 +5,7 @@
                 <div class="header-title">地球管理系统</div>
             </div>
             <div class="header-rinfo">
+                <img v-if="user.avatarUrl" :src="user.avatarUrl" class="header-avatar" alt="头像" />
                 当前用户：
                 <span> {{ user.username }} </span>
                 <span class="header-exit">
@@ -41,3 +42,15 @@ async function logout(){
 
 
 </script>
+
+<style scoped>
+.header-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  vertical-align: middle;
+  margin: 0 6px;
+  border: 1px solid #eee;
+}
+</style>
