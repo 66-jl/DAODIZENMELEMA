@@ -18,6 +18,7 @@ class DemoApplicationTests {
 	public void findalltest(){
 		List<User> userList = userMapper.findall();
 		userList.forEach(System.out::println);
+		
 
 
 	}

@@ -1,7 +1,7 @@
 <template>
 
     <el-dialog v-model="dialogFormVisible" title="信息" width="500">
-        <el-form :model="form">
+        <el-form :model="userform">
             <el-form-item label="姓名" :label-width="formLabelWidth">
                 <el-input v-model="userform.username" autocomplete="off" />
             </el-form-item>

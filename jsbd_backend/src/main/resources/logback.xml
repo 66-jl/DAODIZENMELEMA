@@ -30,6 +30,18 @@
         </encoder>
     </appender>
 
+    <!-- 只让你自己的包输出 INFO -->
+    <logger name="com.example.demo" level="INFO" />
+
+    <!-- 屏蔽框架的 INFO，只保留 WARN 以上 -->
+    <logger name="cn.dev33.satoken" level="INFO" />
+    <logger name="org.springframework" level="WARN" />
+    <logger name="com.baomidou.mybatisplus" level="WARN" />
+    <logger name="com.zaxxer.hikari" level="WARN" />
+    <logger name="org.apache.tomcat" level="WARN" />
+    <logger name="org.mybatis" level="WARN" />
+    <logger name="org.apache.ibatis" level="WARN" />
+
 
     <!-- 日志输出级别 -->
     <root level="info">

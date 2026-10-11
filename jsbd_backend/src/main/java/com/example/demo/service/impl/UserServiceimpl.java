@@ -1,8 +1,7 @@
 package com.example.demo.service.impl;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import cn.dev33.satoken.stp.StpUtil;
@@ -93,13 +92,48 @@ public class UserServiceimpl implements UserService {
     }
 
     @Override
-    public void updateuser(User user) {
-        userMapper.updateuser(user);
+    @Transactional(rollbackFor = Exception.class)
+    public void updateuser(UserDTO userDTO) {
+        User user = new User();
+        try {
+            BeanUtils.copyProperties(userDTO, user);
+            //优化先修改基本休息，在删除经历，再插入新的经理
+            userMapper.updateuser(user);
+            List<StudyExperience> exprlist = userDTO.getStudyExperienceList();
+            userMapper.delUserExpr(Arrays.asList(user.getId()));
+            if (exprlist != null && !exprlist.isEmpty()) {
+                exprlist.forEach(expr ->{
+                    expr.setUserId(user.getId());
+                    expr.setCreateTime(LocalDateTime.now());
+                    expr.setUpdateTime(LocalDateTime.now());
+                });
+
+                userMapper.insertStuExpr(exprlist);
+            }
+            userMapper.insertStuExpr(exprlist);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public void delUser(List<Long> ids) {
-        userMapper.delUser(ids);
+    public void delUser(List<Integer> ids) {
+        if (ids == null || ids.isEmpty())
+            return;
+        try {
+            //先删子表后删主表
+            userMapper.delUserExpr(ids);
+            userMapper.delUser(ids);
+
+            OperationLog operationLog = new OperationLog(null, LocalDateTime.now(), "删除用户id：" + ids);
+            userlogService.savelog(operationLog);
+        } catch (Exception e) {
+
+            OperationLog operationLog = new OperationLog(null, LocalDateTime.now(), "删除用户失败");
+            userlogService.savelog(operationLog);
+            throw e;
+        }
     }
 
     @Override

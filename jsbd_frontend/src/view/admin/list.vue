@@ -129,6 +129,7 @@ function conaddref(){
  */
 
 function updateuser(row:any){
+    //仅scope获取id，根据id查数据，传值给showform，通过select
     addref.value.showform(row);
     console.log(Object.keys(row))
 }

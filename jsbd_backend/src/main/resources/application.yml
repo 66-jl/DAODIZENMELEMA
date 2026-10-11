@@ -28,3 +28,9 @@ sa-token:
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
+
+aliyun:
+  oss:
+    endpoint: https://oss-cn-beijing.aliyuncs.com
+    bucketName: javajjsbd
+    region: cn-beijing

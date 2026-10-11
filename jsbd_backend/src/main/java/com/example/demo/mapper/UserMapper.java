@@ -59,7 +59,7 @@ public interface UserMapper {
             + "   #{id}"
             + "</foreach>"
             + "</script>")
-    void delUser(@Param("ids") List<Long> ids);
+    void delUser(@Param("ids") List<Integer> ids);
 
 
     @Select("SELECT * FROM user WHERE username = #{username} AND password = #{password}")
@@ -72,4 +72,11 @@ public interface UserMapper {
     void insertStuExpr(@Param("exprlist") List<StudyExperience> exprlist);
 
 
+    @Delete("<script>"
+            + "DELETE FROM study_experience WHERE study_experience.user_id IN "
+            + "<foreach collection='ids' item='id' open='(' separator=',' close=')'>"
+            + "   #{id}"
+            + "</foreach>"
+            + "</script>")
+    void delUserExpr(List<Integer> ids);
 }

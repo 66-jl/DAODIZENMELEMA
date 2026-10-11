@@ -10,9 +10,11 @@ public interface UserService {
     User finduser(User user);
     User addUser(UserDTO userDTO) throws Exception;
     PageVo<User> findbyPage(User user,Integer pageNum, Integer pageSize);
-    void delUser(List<Long> ids);
 
-    public void updateuser(User user);
+    void updateuser(UserDTO userDTO);
+
+    void delUser(List<Integer> ids);
+
 
     void logout();
     List<User> findall();

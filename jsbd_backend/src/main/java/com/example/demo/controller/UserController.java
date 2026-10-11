@@ -33,9 +33,9 @@ public class UserController {
 
     @PostMapping("/update")
     @CrossOrigin
-    public Result<User> updateuser(@RequestBody User user) {
+    public Result<Void> updateuser(@RequestBody UserDTO user) {
         userService.updateuser(user);
-        return Result.success(user);
+        return Result.success();
     }
 
 
@@ -57,7 +57,7 @@ public class UserController {
 
     @PostMapping("/del")
     @CrossOrigin
-    public Result<Void> deluser(@RequestBody List<Long> ids) {
+    public Result<Void> deluser(@RequestBody List<Integer> ids) {
         userService.delUser(ids);
 
         return Result.success();
